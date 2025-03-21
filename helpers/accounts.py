@@ -24,3 +24,7 @@ def list_accounts(
     if ownership_type:
         params[f"filter[{OwnershipType.SELF}]"] = ownership_type
     return get("accounts", params)
+
+
+def get_account(_id: str) -> Response:
+    return get(f"accounts/{_id}")
