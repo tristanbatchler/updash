@@ -64,10 +64,10 @@ def get(endpoint: str, params: dict[str, str] = {}) -> Response:
     )
 
 
-def patch(endpoint: str, data: dict[str, str]) -> Response:
+def _modify(method: callable, endpoint: str, data: dict[str, str]) -> Response:
     data = json.dumps(data).encode('utf-8')
 
-    response = requests.patch(
+    response = method(
         normalize_endpoint(endpoint),
         data=data,
         headers={
@@ -88,3 +88,15 @@ def patch(endpoint: str, data: dict[str, str]) -> Response:
         response.status_code,
         content
     )
+
+
+def patch(endpoint: str, data: dict[str, str]) -> Response:
+    return _modify(requests.patch, endpoint, data)
+
+
+def post(endpoint: str, data: dict[str, str]) -> Response:
+    return _modify(requests.post, endpoint, data)
+
+
+def delete(endpoint: str, data: dict[str, str]) -> Response:
+    return _modify(requests.delete, endpoint, data)

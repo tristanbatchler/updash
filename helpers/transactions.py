@@ -7,7 +7,8 @@ from updash.helpers.categories import Category
 def list_transactions(
         since: datetime | None = None,
         until: datetime | None = None,
-        category: Category | None = None) -> Response:
+        category: Category | None = None,
+        tag_label: str | None = None) -> Response:
 
     params = {}
 
@@ -22,5 +23,8 @@ def list_transactions(
 
     if category:
         params[f"filter[{category.SELF}"] = category
+
+    if tag_label:
+        params["filter[tag]"] = tag_label
 
     return get("transactions", params)
